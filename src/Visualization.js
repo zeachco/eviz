@@ -1,6 +1,6 @@
 define(['d3'], function(d3){
   'use strict';
-  return function Vizualisation(){
+  return function Visualization(){
     this.param = function(opt){
       opt = opt || {};
       this.options = this.options || {};

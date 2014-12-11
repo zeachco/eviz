@@ -1,4 +1,4 @@
-define(['Vizualisation'], function(Vizualisation){
+define(['Visualization'], function(Visualization){
   function VizTemplate(){
     var self = this;
     var animSpeed = 500;
@@ -37,6 +37,6 @@ define(['Vizualisation'], function(Vizualisation){
     };
 
   }
-  VizTemplate.prototype = new Vizualisation();
+  VizTemplate.prototype = new Visualization();
   return VizTemplate;
 });
