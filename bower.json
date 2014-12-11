@@ -1,0 +1,21 @@
+{
+  "name": "modulus",
+  "version": "0.0.0",
+  "homepage": "https://github.com/zeachco/modulus",
+  "authors": [
+    "Olivier Rousseau-Guyot <zeachco@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "require": "*",
+    "bootstrap": "~3.3.1",
+    "d3": "~3.5.2"
+  }
+}
