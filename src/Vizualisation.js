@@ -1,6 +1,6 @@
 define(['d3'], function(d3){
   'use strict';
-  function CustomExt(){
+  return function Vizualisation(){
     this.param = function(opt){
       opt = opt || {};
       this.options = this.options || {};
@@ -13,9 +13,9 @@ define(['d3'], function(d3){
         console.warn('required method '+func+' is not defined');
       };
     };
-    this.init = function(){ console.error('this.init is required'); };
-    this.render = function(){ console.error('this.render is required'); };
-    this.build = function(el, opt){
+    this._init = function(){ console.error('this._init is required'); };
+    this._update = function(){ console.error('this._render is required'); };
+    this.init = function(el, opt){
       var self = this;
       this.data = [];
       this.el = el || this.el || document.body;
@@ -32,5 +32,5 @@ define(['d3'], function(d3){
       this.data = data || this.data || [];
       if(!this.initiated){ throw 'plugin not initiated before updating'; }
     };
-  }
+  };
 });
