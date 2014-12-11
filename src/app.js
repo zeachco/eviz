@@ -10,7 +10,7 @@ define(['d3', 'Display'], function(d3, Viz){
   template.init();
 
   function feed(){
-    var data = d3.range(1000)
+    var data = d3.range(50)
       .filter(function(d){
         var r = Math.ceil(Math.random()*10);
         return d % r === 0;
@@ -20,7 +20,7 @@ define(['d3', 'Display'], function(d3, Viz){
       })
     ;
     template.update(data);
-    setTimeout(feed, 750);
+    setTimeout(feed, 1750);
   }
   feed();
 });
