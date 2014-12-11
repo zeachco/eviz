@@ -14,23 +14,26 @@ define(['d3'], function(d3){
       };
     };
     this._init = function(){ console.error('this._init is required'); };
-    this._update = function(){ console.error('this._render is required'); };
+    this._update = function(){ console.error('this._update is required'); };
     this.init = function(el, opt){
-      var self = this;
       this.data = [];
       this.el = el || this.el || document.body;
       this.initiated = true;
       this.param(opt);
+      var self = this;
       window.addEventListener('resize', function(){
-        if(self.dirtyTO){
-          clearTimeout(self.dirtyTO);
-        }
-        self.dirtyTO = setTimeout(self._update, 200);
+        self.setDirty();
       });
+      this._init();
+    };
+    this.setDirty = function(){
+      if(this.dirtyTO){ clearTimeout(this.dirtyTO); }
+      this.dirtyTO = setTimeout(this._update, 200);
     };
     this.update = function(data){
       this.data = data || this.data || [];
       if(!this.initiated){ throw 'plugin not initiated before updating'; }
+      this.setDirty();
     };
   };
 });

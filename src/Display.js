@@ -14,7 +14,7 @@ define(['Vizualisation'], function(Vizualisation){
         return JSON.stringify(d);
       });
     };
-
+    
   }
   VizTemplate.prototype = new Vizualisation();
   return VizTemplate;

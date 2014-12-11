@@ -4,6 +4,4 @@ require.config({
   }
 });
 
-require(['main'], function(){
-  console.log('demo started');
-});
+require(['app']);
