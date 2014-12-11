@@ -14,8 +14,8 @@
     "tests"
   ],
   "dependencies": {
-    "require": "*",
     "bootstrap": "~3.3.1",
-    "d3": "~3.5.2"
+    "d3": "~3.5.2",
+    "requirejs": "~2.1.15"
   }
 }
