@@ -1,4 +1,5 @@
 define(['d3'], function(d3){
+  'use strict';
   function CustomExt(){
     this.param = function(opt){
       opt = opt || {};
