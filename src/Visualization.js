@@ -5,7 +5,7 @@ define(['d3'], function(d3){
       opt = opt || {};
       this.options = this.options || {};
       for(var n in opt){
-      	this.options[n] = opt[n] || this.options[n];
+        this.options[n] = opt[n] || this.options[n];
       }
     };
     this.paramRequire = function(func){
