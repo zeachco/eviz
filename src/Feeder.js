@@ -1,13 +1,12 @@
 define(['d3'], function(d3){
   'use strict';
-  return function Feeder(func, maps, len, speed){
-    speed = speed || 1000;
-    var data = [];
-
+  function Feeder(opts){
+    var onData = opts.onData || function(data){ console.log(data); };
+    var maps = opts.maps || [];
+    var len = opts.len || 1000;
+    var speed = opts.speed || 1000;
     function feed(){
-      data = d3.range(len);
-      len = len || 1000;
-      maps = maps || [];
+      var data = d3.range(len);
       data = data.map(function(d, i){
         var arr = [];
         maps.forEach(function(f, i){
@@ -15,10 +14,18 @@ define(['d3'], function(d3){
         });
         return arr;
       });
-      func(data);
-
+      onData(data);
       setTimeout(feed, speed);
     }
     feed();
+  }
+  Feeder.alpha = function(len){
+    var a = 'abcdefghijklmnopqrstuvwxyz0123456789'  ;
+    var str = '';
+    for(var i = 0; i<len; i++){
+      str += a[Math.floor(Math.random()*a.length)];
+    }
+    return str;
   };
+  return Feeder;
 });
