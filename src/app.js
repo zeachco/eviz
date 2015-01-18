@@ -1,4 +1,10 @@
 var template;
+var exampleOptions = {
+  debug: {
+    /* no options */
+  }
+};
+
 define(['d3', 'Display', 'Feeder'], function(d3, Viz, Feeder){
   'use strict';
 
@@ -8,6 +14,13 @@ define(['d3', 'Display', 'Feeder'], function(d3, Viz, Feeder){
     el: container
   });
   template.init();
+
+
+  function showView(plugin){
+    require([plugin], function(plugin){
+      plugin.init(exampleOptions[plugin]);
+    });
+  }
 
   new Feeder({
     speed: 1000,
