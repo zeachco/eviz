@@ -1,13 +1,21 @@
-var gulp = require('gulp');
-var server = require('gulp-server-livereload');
+var gulp        = require('gulp');
+var browserSync = require('browser-sync');
 
-gulp.task('default', function() {
-  gulp.src('app')
-  .pipe(server({
-    livereload: true,
-    root: 'app',
-    directoryListing: true,
-    open: false,
-    port: 8000
-  }));
+// Static server
+gulp.task('default', ['browser-sync']);
+gulp.task('browser-sync', function() {
+  browserSync({
+    server: {
+      baseDir: "./"
+    }
+  });
 });
+
+// or...
+/*
+gulp.task('browser-sync', function() {
+  browserSync({
+    proxy: "yourlocal.dev"
+  });
+});
+*/

@@ -13,6 +13,10 @@ define(['d3'], function(d3){
         console.warn('required method '+func+' is not defined');
       };
     };
+    this.config = function(opt){
+      this.param(opt);
+      return this;
+    };
     this._init = function(){ console.error('this._init is required'); };
     this._update = function(){ console.error('this._update is required'); };
     this.init = function(el, opt){

@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/zeachco/modulus",
   "devDependencies": {
-    "gulp": "^3.8.10",
-    "gulp-connect": "^2.2.0"
+    "browser-sync": "^1.9.0",
+    "gulp": "^3.8.10"
   }
 }
