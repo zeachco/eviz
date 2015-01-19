@@ -6,7 +6,7 @@ gulp.task('default', ['browser-sync']);
 gulp.task('browser-sync', function() {
   browserSync({
     server: {
-      baseDir: "./src/examples",
+      baseDir: "./src",
       directory: true,
       port: 8000,
       livereload: true,
