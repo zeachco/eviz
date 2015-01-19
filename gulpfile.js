@@ -6,16 +6,12 @@ gulp.task('default', ['browser-sync']);
 gulp.task('browser-sync', function() {
   browserSync({
     server: {
-      baseDir: "./"
+      baseDir: "./src/examples",
+      directory: true,
+      port: 8000,
+      livereload: true,
+      directoryListing: true,
+      open: false
     }
   });
 });
-
-// or...
-/*
-gulp.task('browser-sync', function() {
-  browserSync({
-    proxy: "yourlocal.dev"
-  });
-});
-*/
