@@ -33,6 +33,7 @@ eviz.create = function(load){
           delete this.turnOff;
         };
       };
+      AnsweringMachine.prototype = eviz.base;
       var aMachine = new AnsweringMachine();
       require([eviz.pluginsPath + load], function(Loaded){
         Loaded.prototype = eviz.base;
