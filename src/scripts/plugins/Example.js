@@ -1,10 +1,10 @@
 define(['d3'], function(d3){
-  return function PieChart(){
+  return function Example(){
     var self;
     this._init = function(){
       self = this;
       self.container = d3.select(self.el).append('div');
-      self.container.append('p').attr('class','well').html('Ok i\'m working on that one...');
+      self.container.append('h1').html('This is an example');
     };
 
     this._update = function(){

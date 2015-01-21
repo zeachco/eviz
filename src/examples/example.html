@@ -25,8 +25,11 @@
 
   eviz.config({ plugins: '../scripts/plugins/' });
 
-  var pchart = eviz.create('PieChart');
-  pchart.config({ el: document.getElementById('container') });
+  var example = eviz.create('Example');
+  example.config({ el: document.getElementById('container') });
+  example.update(['some', 'array', new Date(), 12, 45 ,78, {a:'test'}])
+
+
   setTimeout(function(){
 
     require(['scripts/Feeder'], function(Feeder){
@@ -34,10 +37,8 @@
         speed: 1000,
         len: 1000,
         onData: function(data){
-          var dynamize = data.filter(function(d, i){
-            return i % Math.ceil(Math.random()*500) === 0;
-          })
-          pchart.update(dynamize);
+          var dynamize = data.filter(function(d, i){ return i % Math.ceil(Math.random()*500) === 0; });
+          example.update(dynamize);
         },
         template: [
         function(r, i, arr){ return Feeder.alpha(8); },
