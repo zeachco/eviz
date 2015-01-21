@@ -46,12 +46,12 @@ eviz.create = function(load){
         // copy attributes from real object
         for (var attr in obj) {
           if(obj.hasOwnProperty(attr) ){
-            console.log(attr);
             aMachine[attr] = obj[attr];
           }
         }
         // apply calls in order
         messages.forEach(function(f){
+          console.log(f);
           aMachine[f.func].apply(aMachine, f.args);
         });
       });
