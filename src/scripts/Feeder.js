@@ -2,14 +2,14 @@ define(['d3'], function(d3){
   'use strict';
   function Feeder(opts){
     var onData = opts.onData || function(data){ console.log(data); };
-    var maps = opts.maps || [];
+    var template = opts.template || [];
     var len = opts.len || 1000;
     var speed = opts.speed || 1000;
     function feed(){
       var data = d3.range(len);
       data = data.map(function(d, i){
         var arr = [];
-        maps.forEach(function(f, i){
+        template.forEach(function(f, i){
           arr[i] = f(Math.random(), i, arr);
         });
         return arr;

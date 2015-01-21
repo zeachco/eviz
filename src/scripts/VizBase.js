@@ -1,6 +1,6 @@
 define(['d3'], function(d3){
   'use strict';
-  return function Visualization(){
+  return function VizBase(){
     this.param = function(opt){
       opt = opt || {};
       this.options = this.options || {};
@@ -15,13 +15,17 @@ define(['d3'], function(d3){
     };
     this.config = function(opt){
       this.param(opt);
+      this.init(opt);
       return this;
+    };
+    this.create = function(){
+      return new this.constructor();
     };
     this._init = function(){ console.error('this._init is required'); };
     this._update = function(){ console.error('this._update is required'); };
-    this.init = function(el, opt){
+    this.init = function(opt){
       this.data = [];
-      this.el = el || this.el || document.body;
+      this.el = opt.el || this.el || document.body;
       this.initiated = true;
       this.param(opt);
       var self = this;
