@@ -97,9 +97,8 @@ function ProtoBase(){
     this._init();
   };
   this.setDirty = function(){
-    var self = this;
-    if(self.dirtyTO){ clearTimeout(self.dirtyTO); }
-    self.dirtyTO = setTimeout(self._update, 200);
+    if(this.dirtyTO){ clearTimeout(this.dirtyTO); }
+    this.dirtyTO = setTimeout(this._update, 200);
   };
   this.update = function(data){
     this.data = data || this.data || [];
