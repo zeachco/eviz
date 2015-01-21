@@ -27,9 +27,6 @@ eviz.config({ plugins: '../scripts/plugins/' });
 
 var pchart = eviz.create('PieChart');
 pchart.config({ el: document.getElementById('container') });
-pchart.update([10,15,457,11,34]);
-pchart.update([1010,315,4457,111,344]);// will overwrite first update call as update is async with 200ms delay
-
 setTimeout(function(){
 
   require(['scripts/Feeder'], function(Feeder){
@@ -42,11 +39,11 @@ setTimeout(function(){
         })
         pchart.update(dynamize);
       },
-      maps: [
-      function(r, i, arr){ return Feeder.alpha(8); },
-      function(r, i, arr){ return r*1000; },
-      function(r, i, arr){ return arr[1] + r*10; },
-      function(r, i, arr){ return r*10; }
+      template: [
+        function(r, i, arr){ return Feeder.alpha(8); },
+        function(r, i, arr){ return r*1000; },
+        function(r, i, arr){ return arr[1] + r*10; },
+        function(r, i, arr){ return r*10; }
       ]
     });
   });

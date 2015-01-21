@@ -5,6 +5,15 @@ window.eviz = {
   pluginsPath: './plugins/'
 };
 
+if(!window.console){ // ie console fix
+  window.console.debug = function(){};
+  window.console.info = function(){};
+  window.console.log = function(){};
+  window.console.warn = function(){};
+  window.console.error = function(){};
+  window.console.table = function(){};
+}
+
 // permit to configure eviz globals
 eviz.config = function(opts){
   eviz.pluginsPath = opts.pluginsPath || opts.plugins|| eviz.pluginsPath;
@@ -51,7 +60,6 @@ eviz.create = function(load){
         }
         // apply calls in order
         messages.forEach(function(f){
-          console.log(f);
           aMachine[f.func].apply(aMachine, f.args);
         });
       });
@@ -95,6 +103,7 @@ function ProtoBase(){
       self.setDirty();
     });
     this._init();
+    this.setDirty();
   };
   this.setDirty = function(){
     if(this.dirtyTO){ clearTimeout(this.dirtyTO); }
