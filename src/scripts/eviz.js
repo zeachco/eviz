@@ -19,32 +19,41 @@ eviz.create = function(load){
     if(typeof require !== 'function'){
       throw load + ' is not part of eviz';
     }else{
-
-      var holds = [];
-      var Temp = function (){
-        function queue(f, a){ holds.push({func: f, args: a}); }
-        this.config = function config(){ queue('config', arguments); };
-        this.init = function init(){ queue('init', arguments); };
-        this.update = function update(){ queue('update', arguments); };
+      var messages = [];
+      // create an answering maachine while real object load
+      var AnsweringMachine = function(){
+        function queue(f, a){ messages.push({func: f, args: a}); }
+        this.config = function(){ queue('config', arguments); };
+        this.init = function(){ queue('init', arguments); };
+        this.update = function(){ queue('update', arguments); };
+        this.turnOff = function(){
+          delete this.config;
+          delete this.init;
+          delete this.update;
+          delete this.turnOff;
+        };
       };
-      var proxy = new Temp();
+      var aMachine = new AnsweringMachine();
       require([eviz.pluginsPath + load], function(Loaded){
         Loaded.prototype = eviz.base;
-
+        // cache for next time
         eviz.plugins[load] = Loaded;
-
+        // create real object once loaded
         var obj = new eviz.plugins[load]();
-
+        // remove "answering machine"
+        aMachine.turnOff();
+        // copy attributes from real object
         for (var attr in obj) {
           if(obj.hasOwnProperty(attr) ){
-            proxy[attr] = obj[attr];
+            aMachine[attr] = obj[attr];
           }
         }
-        holds.forEach(function(f){
-          proxy[f.func].apply(f.args);
+        // apply calls in order
+        messages.forEach(function(f){
+          aMachine[f.func].apply(f.args);
         });
       });
-      return proxy;
+      return aMachine;
     }
   }
   return create;

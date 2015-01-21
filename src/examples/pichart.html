@@ -19,8 +19,6 @@
 eviz.config({ plugins: '../scripts/plugins/' });
 
 var pchart = eviz.create('PieChart');
-console.log(pchart);
-
 pchart.config({ el: document.getElementById('container') });
 pchart.update([10,15,457,11,34]);
 
