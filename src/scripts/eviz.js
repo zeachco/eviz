@@ -27,9 +27,7 @@ eviz.create = function(load){
         this.init = function init(){ queue('init', arguments); };
         this.update = function update(){ queue('update', arguments); };
       };
-
       var proxy = new Temp();
-
       require([eviz.pluginsPath + load], function(Loaded){
         Loaded.prototype = eviz.base;
 
@@ -43,32 +41,13 @@ eviz.create = function(load){
           }
         }
         holds.forEach(function(f){
-          console.log(f);
           proxy[f.func].apply(f.args);
         });
       });
       return proxy;
     }
   }
-
   return create;
-  if(!eviz.plugins[load]){
-    if(typeof require === 'function'){
-      require([eviz.pluginsPath + load], function(Loaded){
-        Loaded.prototype = eviz.base;
-        eviz.plugins[load] = Loaded;
-        tempHolder = new Loaded();
-        holded.forEach(function(d){
-          tempHolder[d.func].apply(d.args);
-        });
-        tempHolder.prototype = eviz.base;
-      });
-      return tempHolder;
-    }else{
-    }
-  }else{
-    return new eviz[load]();
-  }
 };
 
 // base prototype
