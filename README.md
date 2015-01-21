@@ -8,7 +8,7 @@ Features
 npm install -g gulp-cli
 
 steps :
-1- git clone git@github.com:zeachco/modulus.git & npm install -g gulp-cli
-2- cd modulus
-3- npm install & bower install
-4- gulp
+ - git clone git@github.com:zeachco/modulus.git & npm install -g gulp-cli
+ - cd modulus
+ - npm install & bower install
+ - gulp
