@@ -1,5 +1,5 @@
-define([], function(){
-  return function VizTemplate(){
+define(['d3'], function(d3){
+  return function PieChart(){
     var self = this;
 
     self._init = function(){
@@ -7,6 +7,7 @@ define([], function(){
     };
 
     self._update = function(){
+      console.log(self.data, self, this);
       var dataset = self.container.selectAll('pre').data(self.data);
       dataset.enter().append('pre');
       dataset.exit().remove();

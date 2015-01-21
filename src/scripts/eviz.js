@@ -20,7 +20,7 @@ eviz.create = function(load){
       throw load + ' is not part of eviz';
     }else{
       var messages = [];
-      // create an answering maachine while real object load
+      // create an answering machine while real object load
       var AnsweringMachine = function(){
         function queue(f, a){ messages.push({func: f, args: a}); }
         this.config = function(){ queue('config', arguments); };
@@ -46,12 +46,13 @@ eviz.create = function(load){
         // copy attributes from real object
         for (var attr in obj) {
           if(obj.hasOwnProperty(attr) ){
+            console.log(attr);
             aMachine[attr] = obj[attr];
           }
         }
         // apply calls in order
         messages.forEach(function(f){
-          aMachine[f.func].apply(f.args);
+          aMachine[f.func].apply(aMachine, f.args);
         });
       });
       return aMachine;
@@ -61,18 +62,7 @@ eviz.create = function(load){
 };
 
 // base prototype
-eviz.base.paramRequire = function(func){
-  this.options[func] = this.options[func] || function(){
-    console.warn('required method '+func+' is not defined');
-  };
-};
-
-eviz.tempBase = function(){
-
-  this.init = function(){
-    console.log(arguments);
-  };
-
+function ProtoBase(){
   this.param = function(opt){
     opt = opt || {};
     this.options = this.options || {};
@@ -80,11 +70,41 @@ eviz.tempBase = function(){
       this.options[n] = opt[n] || this.options[n];
     }
   };
-
+  this.paramRequire = function(func){
+    this.options[func] = this.options[func] || function(){
+      console.warn('required method '+func+' is not defined');
+    };
+  };
   this.config = function(opt){
     this.param(opt);
     this.init(opt);
     return this;
   };
-};
-eviz.tempBase.prototype = eviz.base;
+  this.create = function(){
+    return new this.constructor();
+  };
+  this._init = function(){ console.error('this._init is not defined on ' + this.constructor.name); };
+  this._update = function(){ console.error('this._update is required ' + this.constructor.name); };
+  this.init = function(opt){
+    this.data = [];
+    this.el = opt.el || this.el || document.body;
+    this.initiated = true;
+    this.param(opt);
+    var self = this;
+    window.addEventListener('resize', function(){
+      self.setDirty();
+    });
+    this._init();
+  };
+  this.setDirty = function(){
+    var self = this;
+    if(self.dirtyTO){ clearTimeout(self.dirtyTO); }
+    self.dirtyTO = setTimeout(self._update, 200);
+  };
+  this.update = function(data){
+    this.data = data || this.data || [];
+    if(!this.initiated){ throw 'plugin not initiated before updating'; }
+    this.setDirty();
+  };
+}
+eviz.base = new ProtoBase();
