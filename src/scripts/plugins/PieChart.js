@@ -7,10 +7,12 @@ define(['d3'], function(d3){
     var r = h/2;
 
     var color = d3.scale.category20c();
-    var arc = d3.svg.arc().outerRadius(r);
+    var arc = d3.svg.arc()
+      .outerRadius(r)
+      .innerRadius(r/2);
 
     this.options = {
-      label: function(d, i){ return (i+1) +'. ' + d[0]; },
+      label: function(d, i){ return ''+d[0]; },
       map: function(d){ return +d[1]; },
       fill: function(d, i){ return color(i);}
     };
@@ -32,9 +34,6 @@ define(['d3'], function(d3){
 
     this._update = function(){
       var pie = d3.layout.pie().value(self.options.map);
-      var arc = d3.svg.arc()
-        .outerRadius(r)
-        .innerRadius(r/2);
       var arcsSet = vis.selectAll("g.slice").data(pie(self.data));
 
       var arcIn = arcsSet.enter().append("svg:g").attr("class", "slice");

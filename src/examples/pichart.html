@@ -40,16 +40,16 @@ pchart.update([
   ['D', 45],
   ['E', 30]
 ]);
-/*
+
 setTimeout(function(){
 
   require(['scripts/Feeder'], function(Feeder){
     new Feeder({
-      speed: 1000,
+      speed: 3000,
       len: 1000,
       onData: function(data){
         var dynamize = data.filter(function(d, i){
-          return i % Math.ceil(Math.random()*50) === 0;
+          return i % Math.ceil(Math.random()*800) === 0;
         })
         pchart.update(dynamize);
       },
