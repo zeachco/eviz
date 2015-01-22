@@ -19,6 +19,10 @@ eviz.config = function(opts){
   eviz.pluginsPath = opts.pluginsPath || opts.plugins|| eviz.pluginsPath;
 };
 
+eviz.register = function(){
+  
+};
+
 // Create plugin with AMD if require loaded
 eviz.create = function(load){
 
@@ -90,6 +94,9 @@ function ProtoBase(){
   };
   this.create = function(){
     return new this.constructor();
+  };
+  this.transform = function(){
+
   };
   this._init = function(){ console.error('this._init is not defined on ' + this.constructor.name); };
   this._update = function(){ console.error('this._update is required ' + this.constructor.name); };

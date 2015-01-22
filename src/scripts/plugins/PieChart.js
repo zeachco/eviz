@@ -49,6 +49,7 @@ define(['d3'], function(d3){
         .attr("fill", self.options.fill)
         .attr("d", arc)
       ;
+      console.log(self.data);
 /*
       arcsSet.select("text")
         .attr("transform", function(d){
