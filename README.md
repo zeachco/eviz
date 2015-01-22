@@ -6,7 +6,7 @@ Features
  - use call catcher that act as answering machines to deal with async dependencing loadings and abstract them
 
 steps :
- - npm install -g gulp-cli & git clone git@github.com:zeachco/modulus.git ./modulus
- - cd modulus
+ - npm install -g gulp-cli & git clone git@github.com:zeachco/eviz.git ./eviz
+ - cd eviz
  - npm install & bower install
  - gulp
