@@ -10,7 +10,7 @@ define(['d3'], function(d3){
     var arc = d3.svg.arc().outerRadius(r);
 
     this.options = {
-      label: function(d, i){ return (i+1) +'. ' + (+d[0]); },
+      label: function(d, i){ return (i+1) +'. ' + d[0]; },
       map: function(d){ return +d[1]; },
       fill: function(d, i){ return color(i);}
     };
@@ -30,29 +30,37 @@ define(['d3'], function(d3){
     };
 
     this._update = function(){
-      console.log('update', self.data);
-
       var pie = d3.layout.pie().value(self.options.map);
-      var arc = d3.svg.arc().outerRadius(r);
+      var arc = d3.svg.arc()
+        .outerRadius(r)
+        .innerRadius(r/2);
       var arcsSet = vis.selectAll("g.slice").data(pie(self.data));
 
-      arcsSet.enter().append("svg:g").attr("class", "slice").append('path');
+      var arcIn = arcsSet.enter().append("svg:g").attr("class", "slice");
+      arcIn.append('path');
+      arcIn.append('text');
       arcsSet.exit().remove();
 
       arcsSet.select('path')
+        .on('mouseover', function(d, i){
+          console.log('show tip for ', self.options.label(d.data, i));
+        })
         .transition().duration(self.options.animTime)
         .attr("fill", self.options.fill)
         .attr("d", arc)
       ;
+/*
+      arcsSet.select("text")
+        .attr("transform", function(d){
+          d.innerRadius = 0;
+          d.outerRadius = r;
+          return "translate(" + arc.centroid(d) + ")";
+        })
+        .attr("text-anchor", "middle").text( function(d, i) {
 
-      arcs.append("svg:text").attr("transform", function(d){
-        d.innerRadius = 0;
-        d.outerRadius = r;
-        return "translate(" + arc.centroid(d) + ")";}).attr("text-anchor", "middle").text( function(d, i) {
-          return data[i].label;}
-        )
+        })
       ;
-
+*/
     };
   };
 });
