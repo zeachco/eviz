@@ -20,6 +20,7 @@ define(['d3'], function(d3){
       self.container = d3.select(self.el).append('div');
 
       self.container.append('h3').attr('class','well').html('Ok i\'m working on that one...');
+      self.info = self.container.append('p').attr('class','well').html('mouse over to view data...');
       vis = self.container.append("svg:svg")
         .attr("width", w)
         .attr("height", h)
@@ -43,7 +44,7 @@ define(['d3'], function(d3){
 
       arcsSet.select('path')
         .on('mouseover', function(d, i){
-          console.log('show tip for ', self.options.label(d.data, i));
+          self.info.html(self.options.label(d.data, i) + ': ' + self.options.map(d.data, i));
         })
         .transition().duration(self.options.animTime)
         .attr("fill", self.options.fill)
