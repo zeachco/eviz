@@ -26,7 +26,21 @@ require.config({
 eviz.config({ plugins: '../scripts/plugins/' });
 
 var pchart = eviz.create('PieChart');
-pchart.config({ el: document.getElementById('container') });
+
+pchart.config({
+  el: document.getElementById('container')/*,
+  label: function(d){ return d[0]; },
+  map: function(d){ return d[1]; }*/
+});
+
+pchart.update([
+  ['A', 12],
+  ['B', 14],
+  ['C', 80],
+  ['D', 45],
+  ['E', 30]
+]);
+
 setTimeout(function(){
 
   require(['scripts/Feeder'], function(Feeder){

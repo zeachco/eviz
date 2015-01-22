@@ -98,6 +98,7 @@ function ProtoBase(){
     this.el = opt.el || this.el || document.body;
     this.initiated = true;
     this.param(opt);
+    this.options.animTime = this.options.animTime || 200;
     var self = this;
     window.addEventListener('resize', function(){
       self.setDirty();
