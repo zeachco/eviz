@@ -16,24 +16,22 @@ if(!window.console){ // ie console fix
 
 // permit to configure eviz globals
 eviz.config = function(opts){
-  eviz.pluginsPath = opts.pluginsPath || opts.plugins|| eviz.pluginsPath;
-};
-
-eviz.register = function(){
-  
+  eviz.pluginsPath = opts.pluginsPath || opts.plugins || eviz.pluginsPath;
+  eviz.fetch = opts.fetch || function(){ throw 'no AMD specified,\n use fetch attribute when configuring'; };
 };
 
 // Create plugin with AMD if require loaded
-eviz.create = function(load){
+eviz.create = function(module){
 
-  if(eviz.plugins[load] === 'function'){
-    return new eviz.plugins[load]();
+  if(eviz.plugins[module] === 'function'){
+    return new eviz.plugins[module]();
   }else{
+    eviz.fetch(module);
     if(typeof require !== 'function'){
-      throw load + ' is not part of eviz';
+      throw module + ' is not part of eviz';
     }else{
       var messages = [];
-      // create an answering machine while real object load
+      // create an answering machine while real object module
       var AnsweringMachine = function(){
         function queue(f, a){ messages.push({func: f, args: a}); }
         this.config = function(){ queue('config', arguments); };
@@ -48,12 +46,12 @@ eviz.create = function(load){
       };
       AnsweringMachine.prototype = eviz.base;
       var aMachine = new AnsweringMachine();
-      require([eviz.pluginsPath + load], function(Loaded){
+      eviz.fetch(module, function(name, Loaded){
         Loaded.prototype = eviz.base;
         // cache for next time
-        eviz.plugins[load] = Loaded;
+        eviz.plugins[name] = Loaded;
         // create real object once loaded
-        var obj = new eviz.plugins[load]();
+        var obj = new eviz.plugins[name]();
         // remove "answering machine"
         aMachine.turnOff();
         // copy attributes from real object

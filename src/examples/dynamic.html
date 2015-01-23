@@ -24,9 +24,9 @@
   });
 
   eviz.config({
-    AMD: function(module){
+    fetch: function(module, next){
       require(['../scripts/plugins/' + module], function(Loaded){
-        eviz.register(module, Loaded);
+        next(module, Loaded);
       });
     }
   });
@@ -47,10 +47,10 @@
           example.update(dynamize);
         },
         template: [
-        function(r, i, arr){ return Feeder.alpha(8); },
-        function(r, i, arr){ return r*1000; },
-        function(r, i, arr){ return arr[1] + r*10; },
-        function(r, i, arr){ return r*10; }
+          function(r, i, arr){ return Feeder.alpha(8); },
+          function(r, i, arr){ return r*1000; },
+          function(r, i, arr){ return arr[1] + r*10; },
+          function(r, i, arr){ return r*10; }
         ]
       });
     });
