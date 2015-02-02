@@ -1,4 +1,4 @@
-modulus
+EViz
 =======
 Features
  - Provide eviz module to organize and develop visualization extensions
