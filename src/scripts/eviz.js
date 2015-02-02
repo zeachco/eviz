@@ -14,10 +14,20 @@ if(!window.console){ // ie console fix
   window.console.table = function(){};
 }
 
+eviz.fetch = function(module, next){  
+    if(!require){
+      throw 'no AMD specified,\n use fetch attribute when configuring';
+    }else{
+      require(['../scripts/plugins/' + module], function(Loaded){
+        next(module, Loaded);
+      });
+    }
+};
+
 // permit to configure eviz globals
 eviz.config = function(opts){
   eviz.pluginsPath = opts.pluginsPath || opts.plugins || eviz.pluginsPath;
-  eviz.fetch = opts.fetch || function(){ throw 'no AMD specified,\n use fetch attribute when configuring'; };
+  eviz.fetch = opts.fetch || eviz.fetch;
 };
 
 // Create plugin with AMD if require loaded
@@ -26,47 +36,42 @@ eviz.create = function(module){
   if(eviz.plugins[module] === 'function'){
     return new eviz.plugins[module]();
   }else{
-    eviz.fetch(module);
-    if(typeof require !== 'function'){
-      throw module + ' is not part of eviz';
-    }else{
-      var messages = [];
-      // create an answering machine while real object module
-      var AnsweringMachine = function(){
-        function queue(f, a){ messages.push({func: f, args: a}); }
-        this.config = function(){ queue('config', arguments); };
-        this.init = function(){ queue('init', arguments); };
-        this.update = function(){ queue('update', arguments); };
-        this.turnOff = function(){
-          delete this.config;
-          delete this.init;
-          delete this.update;
-          delete this.turnOff;
-        };
+    var messages = [];
+    // create an answering machine while real object module
+    var AnsweringMachine = function(){
+      function queue(f, a){ messages.push({func: f, args: a}); }
+      this.config = function(){ queue('config', arguments); };
+      this.init = function(){ queue('init', arguments); };
+      this.update = function(){ queue('update', arguments); };
+      this.turnOff = function(){
+        delete this.config;
+        delete this.init;
+        delete this.update;
+        delete this.turnOff;
       };
-      AnsweringMachine.prototype = eviz.base;
-      var aMachine = new AnsweringMachine();
-      eviz.fetch(module, function(name, Loaded){
-        Loaded.prototype = eviz.base;
-        // cache for next time
-        eviz.plugins[name] = Loaded;
-        // create real object once loaded
-        var obj = new eviz.plugins[name]();
-        // remove "answering machine"
-        aMachine.turnOff();
-        // copy attributes from real object
-        for (var attr in obj) {
-          if(obj.hasOwnProperty(attr) ){
-            aMachine[attr] = obj[attr];
-          }
+    };
+    AnsweringMachine.prototype = eviz.base;
+    var aMachine = new AnsweringMachine();
+    eviz.fetch(module, function(name, Loaded){
+      Loaded.prototype = eviz.base;
+      // cache for next time
+      eviz.plugins[name] = Loaded;
+      // create real object once loaded
+      var obj = new eviz.plugins[name]();
+      // remove "answering machine"
+      aMachine.turnOff();
+      // copy attributes from real object
+      for (var attr in obj) {
+        if(obj.hasOwnProperty(attr) ){
+          aMachine[attr] = obj[attr];
         }
-        // apply calls in order
-        messages.forEach(function(f){
-          aMachine[f.func].apply(aMachine, f.args);
-        });
+      }
+      // apply calls in order
+      messages.forEach(function(f){
+        aMachine[f.func].apply(aMachine, f.args);
       });
-      return aMachine;
-    }
+    });
+    return aMachine;
   }
   return create;
 };

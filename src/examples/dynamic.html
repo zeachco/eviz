@@ -32,8 +32,17 @@
   });
 
   var example = eviz.create('Example');
+
   example.config({ el: document.getElementById('container') });
-  example.update(['some', 'array', new Date(), 12, 45 ,78, {anObject:'test'}, ['an array',12,12,13,15,18,25]])
+  example.update(['some', 'array', new Date(), 12, 45 ,78, {anObject:'test'}, ['an array',12,12,13,15,18,25]]);
+
+  setTimeout(function(){
+
+    example.transform('PiChart');
+    example.update(['some', 'array', new Date(), 12, 45 ,78, {anObject:'test'}, ['an array',12,12,13,15,18,25]]);
+
+  }, 10000);
+
 
 
   setTimeout(function(){
