@@ -8,7 +8,7 @@ define(['d3'], function(d3){
     };
 
     this._update = function(){
-      console.log(self.data);
+      //console.log(self.data);
       var dataset = self.container.selectAll('pre').data(self.data);
       dataset.enter().append('pre');
       dataset.exit().remove();

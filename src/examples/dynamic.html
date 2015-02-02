@@ -50,21 +50,11 @@
       ['an array', 12, 12, 13, 15, 18, 25]
     ]);
 
-    // async update
-    setTimeout(function() {
-
-      example.transform('PiChart');
-      example.update(['some', 'array', new Date(), 12, 45, 78, {
-          anObject: 'test'
-        },
-        ['an array', 12, 12, 13, 15, 18, 25]
-      ]);
-
-    }, 10000);
 
 
     // for demo purpose, can change dynamically the graph
-    var modes = ['Example', 'PiChart'];
+    var modes = ['Example', 'PieChart'];
+    var currentMode = 'Example';
     var modeSelector = document.getElementById('modes');
     modes.forEach(function(mode) {
       var newOption = document.createElement('option');
@@ -75,6 +65,11 @@
         example.transform(this.value);
       };
     });
+
+    // async transform
+    setTimeout(function() {
+      modeSelector.value = "PieChart";
+    }, 8000);
 
     // Dynamic feeding example
     setTimeout(function() {
