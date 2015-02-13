@@ -21,10 +21,19 @@
 
   <script>
     // dependency configuration
+
     require.config({
       baseUrl: '/',
       paths: {
         'd3': 'libs/d3/d3.min'
+      }
+    });
+
+    proxy = new Proxy({
+      fetch: function(module, next) {
+        require(['../scripts/plugins/' + module], function(Loaded) {
+          next(module, Loaded);
+        });
       }
     });
 
