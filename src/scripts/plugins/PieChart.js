@@ -49,18 +49,6 @@ define(['d3'], function(d3){
         .attr("fill", self.options.fill)
         .attr("d", arc)
       ;
-/*
-      arcsSet.select("text")
-        .attr("transform", function(d){
-          d.innerRadius = 0;
-          d.outerRadius = r;
-          return "translate(" + arc.centroid(d) + ")";
-        })
-        .attr("text-anchor", "middle").text( function(d, i) {
-
-        })
-      ;
-*/
     };
   };
 });

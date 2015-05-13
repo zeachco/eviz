@@ -5,37 +5,53 @@ window.eviz = {
   pluginsPath: './plugins/'
 };
 
-if(!window.console){ // ie console fix
-  window.console.debug = function(){};
-  window.console.info = function(){};
-  window.console.log = function(){};
-  window.console.warn = function(){};
-  window.console.error = function(){};
-  window.console.table = function(){};
+if (!window.console) { // ie console fix
+  var noFunc = function() {};
+  window.console = {
+    debug: noFunc,
+    info: noFunc,
+    log: noFunc,
+    warn: noFunc,
+    table: noFunc
+  };
+  window.console.error = function() {
+    alert(arguments);
+  };
 }
 
 // permit to configure eviz globals
-eviz.config = function(opts){
-  eviz.pluginsPath = opts.pluginsPath || opts.plugins|| eviz.pluginsPath;
+eviz.config = function(opts) {
+  eviz.pluginsPath = opts.pluginsPath || opts.plugins || eviz.pluginsPath;
 };
 
 // Create plugin with AMD if require loaded
-eviz.create = function(load){
+eviz.create = function(load) {
 
-  if(eviz.plugins[load] === 'function'){
+  if (eviz.plugins[load] === 'function') {
     return new eviz.plugins[load]();
-  }else{
-    if(typeof require !== 'function'){
+  } else {
+    if (typeof require !== 'function') {
       throw load + ' is not part of eviz';
-    }else{
+    } else {
       var messages = [];
       // create an answering machine while real object load
-      var AnsweringMachine = function(){
-        function queue(f, a){ messages.push({func: f, args: a}); }
-        this.config = function(){ queue('config', arguments); };
-        this.init = function(){ queue('init', arguments); };
-        this.update = function(){ queue('update', arguments); };
-        this.turnOff = function(){
+      var AnsweringMachine = function() {
+        function queue(f, a) {
+          messages.push({
+            func: f,
+            args: a
+          });
+        }
+        this.config = function() {
+          queue('config', arguments);
+        };
+        this.init = function() {
+          queue('init', arguments);
+        };
+        this.update = function() {
+          queue('update', arguments);
+        };
+        this.turnOff = function() {
           delete this.config;
           delete this.init;
           delete this.update;
@@ -44,7 +60,7 @@ eviz.create = function(load){
       };
       AnsweringMachine.prototype = eviz.base;
       var aMachine = new AnsweringMachine();
-      require([eviz.pluginsPath + load], function(Loaded){
+      require([eviz.pluginsPath + load], function(Loaded) {
         Loaded.prototype = eviz.base;
         // cache for next time
         eviz.plugins[load] = Loaded;
@@ -54,12 +70,12 @@ eviz.create = function(load){
         aMachine.turnOff();
         // copy attributes from real object
         for (var attr in obj) {
-          if(obj.hasOwnProperty(attr) ){
+          if (obj.hasOwnProperty(attr)) {
             aMachine[attr] = obj[attr];
           }
         }
         // apply calls in order
-        messages.forEach(function(f){
+        messages.forEach(function(f) {
           aMachine[f.func].apply(aMachine, f.args);
         });
       });
@@ -70,49 +86,57 @@ eviz.create = function(load){
 };
 
 // base prototype
-function ProtoBase(){
-  this.param = function(opt){
+function ProtoBase() {
+  this.param = function(opt) {
     opt = opt || {};
     this.options = this.options || {};
-    for(var n in opt){
+    for (var n in opt) {
       this.options[n] = opt[n] || this.options[n];
     }
   };
-  this.paramRequire = function(func){
-    this.options[func] = this.options[func] || function(){
-      console.warn('required method '+func+' is not defined');
+  this.paramRequire = function(func) {
+    this.options[func] = this.options[func] || function() {
+      console.warn('required method ' + func + ' is not defined');
     };
   };
-  this.config = function(opt){
+  this.config = function(opt) {
     this.param(opt);
     this.init(opt);
     return this;
   };
-  this.create = function(){
+  this.create = function() {
     return new this.constructor();
   };
-  this._init = function(){ console.error('this._init is not defined on ' + this.constructor.name); };
-  this._update = function(){ console.error('this._update is required ' + this.constructor.name); };
-  this.init = function(opt){
+  this._init = function() {
+    console.error('this._init is not defined on ' + this.constructor.name);
+  };
+  this._update = function() {
+    console.error('this._update is required ' + this.constructor.name);
+  };
+  this.init = function(opt) {
     this.data = [];
     this.el = opt.el || this.el || document.body;
     this.initiated = true;
     this.param(opt);
     this.options.animTime = this.options.animTime || 200;
     var self = this;
-    window.addEventListener('resize', function(){
+    window.addEventListener('resize', function() {
       self.setDirty();
     });
     this._init();
     this.setDirty();
   };
-  this.setDirty = function(){
-    if(this.dirtyTO){ clearTimeout(this.dirtyTO); }
+  this.setDirty = function() {
+    if (this.dirtyTO) {
+      clearTimeout(this.dirtyTO);
+    }
     this.dirtyTO = setTimeout(this._update, 200);
   };
-  this.update = function(data){
+  this.update = function(data) {
     this.data = data || this.data || [];
-    if(!this.initiated){ throw 'plugin not initiated before updating'; }
+    if (!this.initiated) {
+      throw 'plugin not initiated before updating';
+    }
     this.setDirty();
   };
 }
